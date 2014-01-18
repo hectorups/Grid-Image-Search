@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/GridImageSearch/GridImageSearch.iml" filepath="$PROJECT_DIR$/GridImageSearch/GridImageSearch.iml" />
+      <module fileurl="file://$PROJECT_DIR$/GridImageSearchProject.iml" filepath="$PROJECT_DIR$/GridImageSearchProject.iml" />
+    </modules>
+  </component>
+</project>
+

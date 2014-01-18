@@ -1,0 +1,109 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".AdvancedFilterActivity" >
+
+    <TextView
+        android:id="@+id/tvColorFilterTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tvImageSizeTitle"
+        android:layout_below="@+id/tvImageSizeTitle"
+        android:layout_marginTop="20dp"
+        android:text="@string/color_filter_title"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/tvImageTypeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvColorFilterTitle"
+        android:layout_marginTop="18dp"
+        android:text="@string/image_type_title"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/tvSiteFilterTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tvImageTypeTitle"
+        android:layout_below="@+id/tvImageTypeTitle"
+        android:layout_marginTop="20dp"
+        android:text="@string/site_filter_title"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <EditText
+        android:id="@+id/etSiteFilter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/saveButton"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/tvSiteFilterTitle"
+        android:ems="8"
+         >
+
+        <requestFocus />
+    </EditText>
+
+    <Spinner
+        android:id="@+id/spImageSize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/spColor"
+        android:layout_alignRight="@+id/spColor"
+        android:layout_alignTop="@+id/tvImageSizeTitle" />
+
+    <Spinner
+        android:id="@+id/spColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/spImageType"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/tvColorFilterTitle" />
+
+    <Spinner
+        android:id="@+id/spImageType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/etSiteFilter"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/tvImageTypeTitle"  />
+
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etSiteFilter"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:gravity="left"
+        android:text="@string/save_button_text"
+        android:onClick="onSaveClicked" />
+
+    <TextView
+        android:id="@+id/tvAdvancedFilter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tvImageTypeTitle"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="36dp"
+        android:text="@string/Settings_title"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvImageSizeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tvAdvancedFilter"
+        android:layout_below="@+id/tvAdvancedFilter"
+        android:layout_marginTop="30dp"
+        android:text="@string/image_size_title"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+</RelativeLayout>
