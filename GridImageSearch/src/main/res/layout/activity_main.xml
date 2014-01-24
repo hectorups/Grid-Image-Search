@@ -11,25 +11,27 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:inputType="text"
         android:id="@+id/etQuery"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:hint="search_hint"
         android:layout_toLeftOf="@+id/btnSearch" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/search"
+    <ImageButton
         android:id="@+id/btnSearch"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:src="@android:drawable/ic_menu_search"
         android:layout_alignParentRight="true"
-        android:onClick="onImageSearch"
         android:layout_alignParentTop="true"
-        android:layout_alignBottom="@+id/etQuery" />
+        android:onClick="onImageSearch"
+        android:layout_alignBottom="@+id/etQuery"/>
 
     <GridView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:id="@+id/gvResults"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/btnSearch"

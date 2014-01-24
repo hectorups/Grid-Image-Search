@@ -7,11 +7,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.Toast;
-
 
 import java.util.ArrayList;
 
@@ -20,7 +19,7 @@ public class SearchActivity extends Activity {
     final private String TAG = "SearchActivity";
 
     private EditText etQuery;
-    private Button btnSearch;
+    private ImageButton btnSearch;
     private GridView gvResults;
     private ArrayList<ImageResult> imageResults = new ArrayList<>();
     private ImageResultArrayAdapter imageAdapter;
@@ -40,37 +39,7 @@ public class SearchActivity extends Activity {
 
         setContentView(R.layout.activity_main);
         setupViews();
-        imageAdapter = new ImageResultArrayAdapter(this, imageResults);
-        gvResults.setAdapter(imageAdapter);
-        gvResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Intent intent = new Intent(getApplicationContext(), ImageDisplayActivity.class);
-                ImageResult imageResult = imageResults.get(position);
-                intent.putExtra("result", imageResult);
-                startActivity(intent);
-            }
-        });
 
-
-        imageManagerCallback = new ImageManager.ImageManagerCallback() {
-            @Override
-            public void onSuccess(ArrayList<ImageResult> results) {
-                imageAdapter.addAll(results);
-            }
-        };
-
-        endlessScrollListener = new EndlessScrollListener() {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount) {
-                String query = getQuery();
-                if( query == null) return;
-
-                imageManager.queryImages(query, page - 1, imageManagerCallback);
-            }
-        };
-
-        gvResults.setOnScrollListener(endlessScrollListener);
 
     }
 
@@ -96,8 +65,43 @@ public class SearchActivity extends Activity {
 
     private void setupViews(){
         etQuery = (EditText) findViewById(R.id.etQuery);
-        btnSearch = (Button) findViewById(R.id.btnSearch);
+        btnSearch = (ImageButton) findViewById(R.id.btnSearch);
         gvResults = (GridView) findViewById(R.id.gvResults);
+
+        imageAdapter = new ImageResultArrayAdapter(this, imageResults);
+        gvResults.setAdapter(imageAdapter);
+        gvResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Intent intent = new Intent(getApplicationContext(), ImageDisplayActivity.class);
+                ImageResult imageResult = imageResults.get(position);
+                intent.putExtra("result", imageResult);
+                startActivity(intent);
+            }
+        });
+
+
+        imageManagerCallback = new ImageManager.ImageManagerCallback() {
+            @Override
+            public void onSuccess(ArrayList<ImageResult> results) {
+                for(ImageResult result: results){
+                    imageAdapter.add(result);
+                }
+                imageAdapter.notifyDataSetChanged();
+            }
+        };
+
+        endlessScrollListener = new EndlessScrollListener() {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+                String query = getQuery();
+                if( query == null) return;
+
+                imageManager.queryImages(query, page - 1, imageManagerCallback);
+            }
+        };
+
+        gvResults.setOnScrollListener(endlessScrollListener);
     }
 
     public void onImageSearch(View v){
