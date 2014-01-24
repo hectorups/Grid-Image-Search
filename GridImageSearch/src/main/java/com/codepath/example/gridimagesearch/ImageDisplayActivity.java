@@ -36,6 +36,8 @@ public class ImageDisplayActivity extends Activity {
 
         ivImage = (ImageView) findViewById(R.id.ivResult);
 
+        ivImage.setImageResource(R.drawable.generic_picture);
+
         Picasso.with(this)
                 .load(Uri.parse(imageResult.getFullUrl()))
                 .into(target);

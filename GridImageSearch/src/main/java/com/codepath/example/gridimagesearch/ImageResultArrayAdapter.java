@@ -7,9 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -45,7 +43,7 @@ public class ImageResultArrayAdapter extends ArrayAdapter<ImageResult> {
         tvTitle.setEllipsize(TextUtils.TruncateAt.END);
         tvTitle.setText(imageInfo.getTitle());
 
-
+        ivImage.setImageResource(R.drawable.generic_picture);
 
         Picasso.with(getContext())
                         .load(Uri.parse(imageInfo.getThumbUrl()))
