@@ -11,9 +11,8 @@
     <ImageView
         android:id="@+id/ivResult"
         android:maxWidth="600dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
         android:src="@android:drawable/screen_background_light"
+        android:layout_centerInParent="true"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content" />
 
