@@ -37,8 +37,9 @@ public class ImageManager {
         this.searchSettings = searchSettings;
     }
 
-
-
+    public void setSearchSettings(SearchSettings searchSettings){
+        this.searchSettings = searchSettings;
+    }
 
     public void queryImages(String query, final int page, final ImageManagerCallback imageManagerCallback){
         AsyncHttpClient client = new AsyncHttpClient();

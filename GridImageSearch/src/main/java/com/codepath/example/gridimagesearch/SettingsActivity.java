@@ -1,24 +1,17 @@
 package com.codepath.example.gridimagesearch;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.os.Build;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-public class SettingsActivity extends ActionBarActivity {
+public class SettingsActivity extends Activity {
+
+    public static final String SETTINGS = "com.codepath.example.gridimagesearch.activity.settings";
 
     Spinner spImageSize;
     ArrayAdapter<CharSequence> spImageSizeAdapter;
@@ -39,7 +32,7 @@ public class SettingsActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        searchSettings = SearchSettings.getInstance(this);
+        searchSettings = (SearchSettings) getIntent().getSerializableExtra(SETTINGS);
         setupViews();
     }
 
@@ -96,9 +89,9 @@ public class SettingsActivity extends ActionBarActivity {
 
         searchSettings.setSiteFilter( etSiteFilter.getText().toString() );
 
-        searchSettings.saveSettings();
-
-        setResult(RESULT_OK, new Intent());
+        Intent i = new Intent();
+        i.putExtra(SETTINGS, searchSettings);
+        setResult(RESULT_OK, i);
         finish();
 
     }

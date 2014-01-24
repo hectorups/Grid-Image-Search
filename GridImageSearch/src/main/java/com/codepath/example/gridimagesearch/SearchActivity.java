@@ -17,6 +17,7 @@ import java.util.ArrayList;
 public class SearchActivity extends Activity {
 
     final private String TAG = "SearchActivity";
+    final private int REQUEST_CODE = 1;
 
     private EditText etQuery;
     private ImageButton btnSearch;
@@ -28,14 +29,16 @@ public class SearchActivity extends Activity {
 
     private ImageManager imageManager;
 
-
+    private SearchSettings searchSettings;
     private ImageManager.ImageManagerCallback imageManagerCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        imageManager = ImageManager.getInstance(SearchSettings.getInstance(this));
+        searchSettings = new SearchSettings();
+
+        imageManager = ImageManager.getInstance(searchSettings);
 
         setContentView(R.layout.activity_main);
         setupViews();
@@ -46,7 +49,7 @@ public class SearchActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.activity_image_display, menu);
+        getMenuInflater().inflate(R.menu.activity_search, menu);
         return true;
     }
 
@@ -56,7 +59,8 @@ public class SearchActivity extends Activity {
         switch (item.getItemId()) {
             case R.id.menuSetting:
                 Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
-                startActivity(intent);
+                intent.putExtra(SettingsActivity.SETTINGS, searchSettings);
+                startActivityForResult(intent, REQUEST_CODE);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -104,6 +108,15 @@ public class SearchActivity extends Activity {
         gvResults.setOnScrollListener(endlessScrollListener);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // REQUEST_CODE is defined above
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+            searchSettings = (SearchSettings) data.getExtras().getSerializable(SettingsActivity.SETTINGS);
+            imageManager.setSearchSettings(searchSettings);
+        }
+    }
+
     public void onImageSearch(View v){
 
         String query = getQuery();
@@ -115,7 +128,6 @@ public class SearchActivity extends Activity {
         imageManager.queryImages(query, 0, imageManagerCallback);
 
     }
-
 
 
     private String getQuery(){

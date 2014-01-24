@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">GridImageSearch</string>
-    <string name="title_activity_search">Search Image</string>
+    <string name="title_activity_search">Google Search Image</string>
     <string name="search_hint">Enter Search Term</string>
     <string name="search">Search</string>
     <string name="title_activity_activity_image_display">Image Display</string>
@@ -16,5 +16,6 @@
     <string name="site_filter_title">Web Filter</string>
     <string name="save_button_text">Save</string>
     <string name="Settings_title">Advanced Search Options</string>
+    <string name="share_image">Share Content</string>
 
 </resources>

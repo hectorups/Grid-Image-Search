@@ -1,8 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     <item
-        android:id="@+id/menuSetting"
-        android:icon="@drawable/ic_ico_setting"
+        android:id="@+id/menuShare"
+
         android:showAsAction="ifRoom"
-        android:title="Compose">
-    </item>
+        android:actionProviderClass=
+            "android.widget.ShareActionProvider"
+        />
+
 </menu>
