@@ -8,12 +8,12 @@
         android:title="search"
         android:icon="@android:drawable/ic_menu_search"
         com.codepath.example.gridimagesearch:showAsAction="ifRoom|collapseActionView"
-        com.codepath.example.gridimagesearch:actionViewClass="android.support.v7.widget.SearchView" ></item>
+        com.codepath.example.gridimagesearch:actionViewClass="android.support.v7.widget.SearchView" />
 
     <item
         android:id="@+id/menuSetting"
         android:icon="@drawable/ic_ico_setting"
-        android:showAsAction="ifRoom"
+        com.codepath.example.gridimagesearch:showAsAction="ifRoom"
         android:title="@string/action_settings">
     </item>
 </menu>
