@@ -163,6 +163,7 @@ public class SearchActivity extends ActionBarActivity {
     }
 
     private String getQuery(){
+        if( query == null ) return "";
         return query;
     }
 
