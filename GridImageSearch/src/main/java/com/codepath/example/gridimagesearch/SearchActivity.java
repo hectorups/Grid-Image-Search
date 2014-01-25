@@ -11,7 +11,6 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -102,6 +101,11 @@ public class SearchActivity extends Activity {
                 }
                 imageAdapter.notifyDataSetChanged();
             }
+
+            @Override
+            public void onFinished(){
+                btnSearch.setEnabled(true);
+            }
         };
 
         endlessScrollListener = new EndlessScrollListener() {
@@ -119,7 +123,6 @@ public class SearchActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // REQUEST_CODE is defined above
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
             searchSettings = (SearchSettings) data.getExtras().getSerializable(SettingsActivity.SETTINGS);
             imageManager.setSearchSettings(searchSettings);
@@ -130,9 +133,10 @@ public class SearchActivity extends Activity {
 
         String query = getQuery();
         if( query == null) return;
-        Toast.makeText(this, "Search for " + query, Toast.LENGTH_SHORT).show();
         imageResults.clear();
         endlessScrollListener.reset();
+
+        btnSearch.setEnabled(false);
 
         imageManager.queryImages(query, 0, imageManagerCallback);
 

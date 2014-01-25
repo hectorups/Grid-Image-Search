@@ -11,7 +11,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.ShareActionProvider;
 
 import com.squareup.picasso.Picasso;
@@ -28,6 +30,7 @@ public class ImageDisplayActivity extends Activity {
     ImageResult imageResult;
     ShareActionProvider miShareAction;
     ImageView ivImage;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +41,8 @@ public class ImageDisplayActivity extends Activity {
 
         ivImage = (ImageView) findViewById(R.id.ivResult);
 
-        ivImage.setImageResource(R.drawable.generic_picture);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
 
         Picasso.with(this)
                 .load(Uri.parse(imageResult.getFullUrl()))
@@ -122,10 +126,12 @@ public class ImageDisplayActivity extends Activity {
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
             ivImage.setImageBitmap(bitmap);
             prepareImageForShare(bitmap);
+            progressBar.setVisibility(View.INVISIBLE);
         }
 
         @Override
-        public void onBitmapFailed(Drawable d) {}
+        public void onBitmapFailed(Drawable d) {
+        }
 
         @Override
         public void onPrepareLoad(android.graphics.drawable.Drawable drawable){}

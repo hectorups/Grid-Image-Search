@@ -19,6 +19,7 @@ public class ImageManager {
 
     public static interface ImageManagerCallback {
       public void onSuccess(ArrayList<ImageResult> results);
+      public void onFinished();
     };
 
     private final int GOOGLE_MAX_IMAGES = 8;
@@ -54,6 +55,8 @@ public class ImageManager {
                     imageManagerCallback.onSuccess(ImageResult.fromJSONArray(imageJsonResults));
                 } catch (JSONException e) {
                     e.printStackTrace();
+                } finally {
+                    imageManagerCallback.onFinished();
                 }
 
             }
