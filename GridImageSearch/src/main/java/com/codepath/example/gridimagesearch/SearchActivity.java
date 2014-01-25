@@ -1,33 +1,32 @@
 package com.codepath.example.gridimagesearch;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.ImageButton;
 
 import java.util.ArrayList;
 
-public class SearchActivity extends Activity {
+public class SearchActivity extends ActionBarActivity {
 
     final private String TAG = "SearchActivity";
     final private int REQUEST_CODE = 1;
     private static final String SEARCH_SETTINGS = "searchsettings";
     private static final String IMAGE_RESULTS = "imageresults";
 
-    private EditText etQuery;
-    private ImageButton btnSearch;
     private GridView gvResults;
     private ArrayList<ImageResult> imageResults;
     private ImageResultArrayAdapter imageAdapter;
+    private String query;
 
     private EndlessScrollListener endlessScrollListener;
 
@@ -36,6 +35,8 @@ public class SearchActivity extends Activity {
     private SearchSettings searchSettings;
     private ImageManager.ImageManagerCallback imageManagerCallback;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +44,7 @@ public class SearchActivity extends Activity {
         if (savedInstanceState != null) {
             searchSettings = (SearchSettings) savedInstanceState.getSerializable(SEARCH_SETTINGS);
             imageResults = savedInstanceState.getParcelableArrayList(IMAGE_RESULTS);
+
         } else {
             searchSettings = new SearchSettings();
             imageResults = new ArrayList<>();
@@ -60,6 +62,12 @@ public class SearchActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.activity_search, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+
+        searchView.setOnQueryTextListener(queryListener);
+
         return true;
     }
 
@@ -78,8 +86,6 @@ public class SearchActivity extends Activity {
     }
 
     private void setupViews(){
-        etQuery = (EditText) findViewById(R.id.etQuery);
-        btnSearch = (ImageButton) findViewById(R.id.btnSearch);
         gvResults = (GridView) findViewById(R.id.gvResults);
 
         imageAdapter = new ImageResultArrayAdapter(this, imageResults);
@@ -106,7 +112,7 @@ public class SearchActivity extends Activity {
 
             @Override
             public void onFinished(){
-                btnSearch.setEnabled(true);
+                // btnSearch.setEnabled(true);
             }
         };
 
@@ -131,22 +137,6 @@ public class SearchActivity extends Activity {
         }
     }
 
-    public void onImageSearch(View v){
-
-        String query = getQuery();
-        if( query == null) return;
-        imageResults.clear();
-        endlessScrollListener.reset();
-
-        btnSearch.setEnabled(false);
-
-        // Hide keyboard
-        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(etQuery.getWindowToken(), 0);
-
-        imageManager.queryImages(query, 0, imageManagerCallback);
-
-    }
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -157,13 +147,37 @@ public class SearchActivity extends Activity {
 
     }
 
-
-
     private String getQuery(){
-        if(etQuery.getText() == null ) return null;
-        return etQuery.getText().toString();
+        return query;
     }
 
+    private void setQuery(String query){
+        this.query = query.trim();
+    }
+
+
+    private SearchView.OnQueryTextListener queryListener = new SearchView.OnQueryTextListener() {
+        @Override
+        public boolean onQueryTextSubmit(String query) {
+            setQuery(query);
+            if( getQuery().length() == 0) return false;
+            imageResults.clear();
+            endlessScrollListener.reset();
+
+            // Hide keyboard
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(gvResults.getWindowToken(), 0);
+
+            imageManager.queryImages(query, 0, imageManagerCallback);
+
+            return false;
+        }
+
+        @Override
+        public boolean onQueryTextChange(String s) {
+            return false;
+        }
+    };
 
 
 }
