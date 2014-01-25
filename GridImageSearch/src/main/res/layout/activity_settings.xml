@@ -89,21 +89,23 @@
         android:id="@+id/tvAdvancedFilter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tvImageTypeTitle"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="22dp"
         android:text="@string/Settings_title"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:textSize="25sp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:id="@+id/tvImageSizeTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tvAdvancedFilter"
-        android:layout_below="@+id/tvAdvancedFilter"
         android:layout_marginTop="30dp"
         android:text="@string/image_size_title"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_below="@+id/tvAdvancedFilter"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
