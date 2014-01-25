@@ -19,13 +19,13 @@ import java.util.ArrayList;
 
 public class SearchActivity extends ActionBarActivity {
 
-    final private String TAG = "SearchActivity";
-    public static final String PREF_SEARCH_QUERY = "searchQuery";
-    final private int REQUEST_CODE = 1;
+    private final String TAG = "SearchActivity";
+    private static  final String PREF_SEARCH_QUERY = "searchQuery";
+    private final int REQUEST_CODE = 1;
     private static final String SEARCH_SETTINGS = "searchsettings";
     private static final String IMAGE_RESULTS = "imageresults";
 
-    final private String FIRST_TIME_QUERY = "cool images";
+    private final String FIRST_TIME_QUERY = "cool images";
 
     private GridView gvResults;
     private ArrayList<ImageResult> imageResults;
@@ -141,9 +141,14 @@ public class SearchActivity extends ActionBarActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
-            searchSettings = (SearchSettings) data.getExtras().getSerializable(SettingsActivity.SETTINGS);
-            imageManager.setSearchSettings(searchSettings);
-            imageManager.queryImages(getQuery(), 0, imageManagerCallback);
+
+            SearchSettings newSearchSettings = (SearchSettings) data.getExtras().getSerializable(SettingsActivity.SETTINGS);
+
+            if( !searchSettings.equals(newSearchSettings) ){
+                searchSettings = newSearchSettings;
+                imageManager.setSearchSettings(searchSettings);
+                refreshResults();
+            }
         }
     }
 
@@ -170,20 +175,23 @@ public class SearchActivity extends ActionBarActivity {
                 .commit();
     }
 
+    private void refreshResults(){
+        if( getQuery().length() == 0) return;
+        imageResults.clear();
+        endlessScrollListener.reset();
+
+        // Hide keyboard
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(gvResults.getWindowToken(), 0);
+
+        imageManager.queryImages(query, 0, imageManagerCallback);
+    }
 
     private SearchView.OnQueryTextListener queryListener = new SearchView.OnQueryTextListener() {
         @Override
         public boolean onQueryTextSubmit(String query) {
             setQuery(query);
-            if( getQuery().length() == 0) return false;
-            imageResults.clear();
-            endlessScrollListener.reset();
-
-            // Hide keyboard
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(gvResults.getWindowToken(), 0);
-
-            imageManager.queryImages(query, 0, imageManagerCallback);
+            refreshResults();
 
             return false;
         }

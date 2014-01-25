@@ -51,4 +51,9 @@ public class SearchSettings implements Serializable {
     public void setSiteFilter(String siteFilter) {
         this.siteFilter = siteFilter;
     }
+
+    public boolean equals(SearchSettings b){
+        return imageColor == b.imageColor && imageType == b.imageType && imageSize == b.imageSize
+                && siteFilter == b.siteFilter;
+    }
 }
