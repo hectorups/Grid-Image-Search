@@ -3,6 +3,7 @@ package com.codepath.example.gridimagesearch;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
@@ -19,9 +20,12 @@ import java.util.ArrayList;
 public class SearchActivity extends ActionBarActivity {
 
     final private String TAG = "SearchActivity";
+    public static final String PREF_SEARCH_QUERY = "searchQuery";
     final private int REQUEST_CODE = 1;
     private static final String SEARCH_SETTINGS = "searchsettings";
     private static final String IMAGE_RESULTS = "imageresults";
+
+    final private String FIRST_TIME_QUERY = "cool images";
 
     private GridView gvResults;
     private ArrayList<ImageResult> imageResults;
@@ -50,11 +54,16 @@ public class SearchActivity extends ActionBarActivity {
             imageResults = new ArrayList<>();
         }
 
+
         imageManager = ImageManager.getInstance(searchSettings);
 
         setContentView(R.layout.activity_main);
         setupViews();
 
+        if(imageResults.size() == 0){
+            query = PreferenceManager.getDefaultSharedPreferences(this).getString(PREF_SEARCH_QUERY, FIRST_TIME_QUERY);
+            imageManager.queryImages(getQuery(), 0, imageManagerCallback);
+        }
 
     }
 
@@ -65,7 +74,7 @@ public class SearchActivity extends ActionBarActivity {
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-
+        searchView.setQueryHint(getResources().getString(R.string.search_hint));
         searchView.setOnQueryTextListener(queryListener);
 
         return true;
@@ -134,6 +143,7 @@ public class SearchActivity extends ActionBarActivity {
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
             searchSettings = (SearchSettings) data.getExtras().getSerializable(SettingsActivity.SETTINGS);
             imageManager.setSearchSettings(searchSettings);
+            imageManager.queryImages(getQuery(), 0, imageManagerCallback);
         }
     }
 
@@ -153,6 +163,11 @@ public class SearchActivity extends ActionBarActivity {
 
     private void setQuery(String query){
         this.query = query.trim();
+
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .edit()
+                .putString(PREF_SEARCH_QUERY, this.query)
+                .commit();
     }
 
 
