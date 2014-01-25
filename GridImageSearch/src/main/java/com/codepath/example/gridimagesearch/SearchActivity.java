@@ -3,6 +3,7 @@ package com.codepath.example.gridimagesearch;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,11 +19,13 @@ public class SearchActivity extends Activity {
 
     final private String TAG = "SearchActivity";
     final private int REQUEST_CODE = 1;
+    private static final String SEARCH_SETTINGS = "searchsettings";
+    private static final String IMAGE_RESULTS = "imageresults";
 
     private EditText etQuery;
     private ImageButton btnSearch;
     private GridView gvResults;
-    private ArrayList<ImageResult> imageResults = new ArrayList<>();
+    private ArrayList<ImageResult> imageResults;
     private ImageResultArrayAdapter imageAdapter;
 
     private EndlessScrollListener endlessScrollListener;
@@ -36,7 +39,13 @@ public class SearchActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        searchSettings = new SearchSettings();
+        if (savedInstanceState != null) {
+            searchSettings = (SearchSettings) savedInstanceState.getSerializable(SEARCH_SETTINGS);
+            imageResults = savedInstanceState.getParcelableArrayList(IMAGE_RESULTS);
+        } else {
+            searchSettings = new SearchSettings();
+            imageResults = new ArrayList<>();
+        }
 
         imageManager = ImageManager.getInstance(searchSettings);
 
@@ -79,8 +88,8 @@ public class SearchActivity extends Activity {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Intent intent = new Intent(getApplicationContext(), ImageDisplayActivity.class);
                 ImageResult imageResult = imageResults.get(position);
-                intent.putExtra("result", imageResult);
-                startActivity(intent);
+                intent.putExtra(ImageDisplayActivity.RESULT, imageResult);
+                startActivityForResult(intent, RESULT_OK);
             }
         });
 
@@ -128,6 +137,16 @@ public class SearchActivity extends Activity {
         imageManager.queryImages(query, 0, imageManagerCallback);
 
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        Log.i(TAG, "onSaveInstanceState");
+        savedInstanceState.putSerializable(SEARCH_SETTINGS, searchSettings);
+        savedInstanceState.putParcelableArrayList(IMAGE_RESULTS, imageResults);
+
+    }
+
 
 
     private String getQuery(){

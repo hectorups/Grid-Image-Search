@@ -1,19 +1,19 @@
 package com.codepath.example.gridimagesearch;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * Created by hectormonserrate on 15/01/14.
  */
-public class ImageResult implements Serializable {
+public class ImageResult implements Parcelable {
 
-    private static final long serialVersionUID = 2636389073439281291L;
     private String fullUrl;
     private String thumbUrl;
     private String title;
@@ -61,4 +61,34 @@ public class ImageResult implements Serializable {
     }
 
 
+    protected ImageResult(Parcel in) {
+        fullUrl = in.readString();
+        thumbUrl = in.readString();
+        title = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(fullUrl);
+        dest.writeString(thumbUrl);
+        dest.writeString(title);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<ImageResult> CREATOR = new Parcelable.Creator<ImageResult>() {
+        @Override
+        public ImageResult createFromParcel(Parcel in) {
+            return new ImageResult(in);
+        }
+
+        @Override
+        public ImageResult[] newArray(int size) {
+            return new ImageResult[size];
+        }
+    };
 }

@@ -23,6 +23,8 @@ import java.io.IOException;
 
 public class ImageDisplayActivity extends Activity {
 
+    public static final String RESULT = "com.codepath.example.gridimagesearch.imagedisplayactivity.result";
+
     ImageResult imageResult;
     ShareActionProvider miShareAction;
     ImageView ivImage;
@@ -32,7 +34,7 @@ public class ImageDisplayActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_display);
 
-        imageResult = (ImageResult) getIntent().getSerializableExtra("result");
+        imageResult = getIntent().getParcelableExtra(RESULT);
 
         ivImage = (ImageView) findViewById(R.id.ivResult);
 
@@ -42,6 +44,14 @@ public class ImageDisplayActivity extends Activity {
                 .load(Uri.parse(imageResult.getFullUrl()))
                 .into(target);
 
+        ancestralNavigation();
+    }
+
+    @TargetApi(11)
+    public void ancestralNavigation() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     @TargetApi(14)
@@ -57,11 +67,22 @@ public class ImageDisplayActivity extends Activity {
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     @TargetApi(14)
     private void setShareIntent(Intent shareIntent){
         if (miShareAction != null) {
             miShareAction.setShareIntent(shareIntent);
-        } else {
+        } else if(Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             startActivity(Intent.createChooser(shareIntent, getResources().getString(R.string.share_image)));
         }
     }

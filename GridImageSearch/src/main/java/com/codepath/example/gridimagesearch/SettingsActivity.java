@@ -1,8 +1,11 @@
 package com.codepath.example.gridimagesearch;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -11,7 +14,7 @@ import android.widget.Spinner;
 
 public class SettingsActivity extends Activity {
 
-    public static final String SETTINGS = "com.codepath.example.gridimagesearch.activity.settings";
+    public static final String SETTINGS = "com.codepath.example.gridimagesearch.settingsactivity.settings";
 
     Spinner spImageSize;
     ArrayAdapter<CharSequence> spImageSizeAdapter;
@@ -34,6 +37,14 @@ public class SettingsActivity extends Activity {
         setContentView(R.layout.activity_settings);
         searchSettings = (SearchSettings) getIntent().getSerializableExtra(SETTINGS);
         setupViews();
+        ancestralNavigation();
+    }
+
+    @TargetApi(11)
+    public void ancestralNavigation() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     private void setupViews() {
@@ -89,17 +100,32 @@ public class SettingsActivity extends Activity {
 
         searchSettings.setSiteFilter( etSiteFilter.getText().toString() );
 
+        finishActivity();
+
+    }
+
+    private void finishActivity(){
         Intent i = new Intent();
         i.putExtra(SETTINGS, searchSettings);
         setResult(RESULT_OK, i);
         finish();
-
     }
 
-    public String valueOfSetting(String value){
+    private String valueOfSetting(String value){
         if(value.trim() == "all") return "";
 
         return value;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finishActivity();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 
